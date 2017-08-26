@@ -1,0 +1,6 @@
+C:\Users\Joe\Documents\Visual Studio 2010\Projects\DataViz_Parallel Coordinates\bin\Release\ParallelCoordinates.exe
+C:\Users\Joe\Documents\Visual Studio 2010\Projects\DataViz_Parallel Coordinates\bin\Release\ParallelCoordinates.pdb
+C:\Users\Joe\Documents\Visual Studio 2010\Projects\DataViz_Parallel Coordinates\obj\Release\WinAppDataVizParallelCoords.Form1.resources
+C:\Users\Joe\Documents\Visual Studio 2010\Projects\DataViz_Parallel Coordinates\obj\Release\ParallelCoordinates.csproj.GenerateResource.Cache
+C:\Users\Joe\Documents\Visual Studio 2010\Projects\DataViz_Parallel Coordinates\obj\Release\ParallelCoordinates.exe
+C:\Users\Joe\Documents\Visual Studio 2010\Projects\DataViz_Parallel Coordinates\obj\Release\ParallelCoordinates.pdb
