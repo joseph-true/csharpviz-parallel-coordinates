@@ -77,15 +77,21 @@ namespace WinAppDataVizParallelCoords
 
 		// Axis points
 		static int offsetX = 20;
-		static int offsetY = 420;
+		static int offsetY = 340;
 		
 		static int m_xAxisStart = offsetX;
 		static int m_yAxisStart = offsetY;
-		static int m_yAxisEnd =100;
+        static int m_yAxisEnd = 60;
 		static int m_pAxisInterval = 110;
 		static int m_yAxisHeight = m_yAxisStart - m_yAxisEnd;
 		
 		string[] m_DimNames = new string[8];
+
+        // Set default color for data lines
+        // Blue
+        // DarkBlue
+        // MidnightBlue
+        Color m_LineColor = Color.MidnightBlue;
 
 		//imported data
 		float[,] m_XYdata;
@@ -94,6 +100,8 @@ namespace WinAppDataVizParallelCoords
 		private System.Windows.Forms.Label lblMsg;
         private Label lblFileName;
         private LinkLabel lnkAbout;
+        private Panel pnlViz;
+        private Button btnLineColor;
 
 		/// <summary>
 		/// Required designer variable.
@@ -137,6 +145,8 @@ namespace WinAppDataVizParallelCoords
             this.lblMsg = new System.Windows.Forms.Label();
             this.lblFileName = new System.Windows.Forms.Label();
             this.lnkAbout = new System.Windows.Forms.LinkLabel();
+            this.pnlViz = new System.Windows.Forms.Panel();
+            this.btnLineColor = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblMsg
@@ -170,16 +180,38 @@ namespace WinAppDataVizParallelCoords
             this.lnkAbout.Text = "About this program";
             this.lnkAbout.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkAbout_LinkClicked);
             // 
+            // pnlViz
+            // 
+            this.pnlViz.BackColor = System.Drawing.Color.White;
+            this.pnlViz.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlViz.Location = new System.Drawing.Point(11, 78);
+            this.pnlViz.Name = "pnlViz";
+            this.pnlViz.Size = new System.Drawing.Size(869, 397);
+            this.pnlViz.TabIndex = 3;
+            // 
+            // btnLineColor
+            // 
+            this.btnLineColor.Location = new System.Drawing.Point(743, 39);
+            this.btnLineColor.Name = "btnLineColor";
+            this.btnLineColor.Size = new System.Drawing.Size(137, 31);
+            this.btnLineColor.TabIndex = 4;
+            this.btnLineColor.Text = "Set Line Color";
+            this.btnLineColor.UseVisualStyleBackColor = true;
+            this.btnLineColor.Click += new System.EventHandler(this.btnLineColor_Click);
+            // 
             // Form1
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(892, 466);
+            this.ClientSize = new System.Drawing.Size(892, 486);
+            this.Controls.Add(this.btnLineColor);
+            this.Controls.Add(this.pnlViz);
             this.Controls.Add(this.lnkAbout);
             this.Controls.Add(this.lblFileName);
             this.Controls.Add(this.lblMsg);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "SharpViz - Parallel Coordinates";
+            this.Text = "C-SharpViz - Parallel Coordinates";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -228,7 +260,7 @@ namespace WinAppDataVizParallelCoords
 		// Draw parallel coordinates
 		private void drawParallelCordinates()
 		{
-			using (Graphics g = this.CreateGraphics())
+            using (Graphics g = pnlViz.CreateGraphics())
 			{
 				Pen myPen = new Pen(Color.Black,1);
 				// x axis - use next line if want to display x axis.
@@ -350,9 +382,11 @@ namespace WinAppDataVizParallelCoords
 				{
 					xLoc=20;
 					// Step thru each column (dimension)
-					using (Graphics g = this.CreateGraphics())
+                    using (Graphics g = pnlViz.CreateGraphics())
 					{
-						Pen myPen = new Pen(Color.Blue,1);
+						// Pen myPen = new Pen(Color.Blue,1);
+                        Pen myPen = new Pen(m_LineColor, 1);
+
 						GraphicsPath myPath = new GraphicsPath();
 						for(int c=0;c<=6;c++)
 						{
@@ -420,10 +454,33 @@ namespace WinAppDataVizParallelCoords
 
         private void lnkAbout_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            string txtMessage = "Joseph True\njtrueprojects@gmail.com\nCopyright 2008-2017";
+            string txtMessage = "Parallel Coordinates\n";
+            txtMessage = txtMessage + "Joseph True\njtrueprojects@gmail.com\nCopyright 2008-2017";
             string txtTitle = "About";
             MessageBox.Show(txtMessage, txtTitle);
         }
 
+        private void btnLineColor_Click(object sender, EventArgs e)
+        {
+            // Show Color Dialog box and capture ok-cancel result
+            ColorDialog cdl = new ColorDialog();
+            DialogResult result = cdl.ShowDialog();
+
+            // Make sure user clicked ok and not cancel
+            if (result == DialogResult.OK)
+            {
+                // Set line color
+                m_LineColor = cdl.Color;
+
+                // First clear the canvas
+                Graphics g = pnlViz.CreateGraphics();
+                g.Clear(pnlViz.BackColor);
+                g.Dispose();
+
+                // Draw viz 
+                drawParallelCordinates();
+                drawDataLines();
+            }
+        }
 	}
 }
