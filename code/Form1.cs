@@ -2,7 +2,7 @@
 // C-Sharp DataViz Parallel Coordinates
 //
 // License:
-// Copyright (c) 2008-2017 Joseph True
+// Copyright (c) 2008-2018 Joseph True
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -265,28 +265,30 @@ namespace WinAppDataVizParallelCoords
 				Pen myPen = new Pen(Color.Black,1);
 				// x axis - use next line if want to display x axis.
 				// g.DrawLine(myPen, new Point(m_xAxisStart,m_yAxisStart), new Point(m_xAxisEnd,m_yAxisStart));
-				
-				Font fnt = new Font("Verdana", 10);
+
+                Font fntDimTitle = new Font("Verdana", 9, FontStyle.Bold);
 
 				// y axis start point
 				int xLoc = m_xAxisStart;
 
 				string strMin;
 				string strMax;
+
+                int xLocTextAdjust = 4;
 				
 				// Draw each y axis.
 				for (int i=1;i<=8;i++)
 				{	
-					// Draw line and text label for axis.
+					// Draw line and text label for dimension titles and y sub-axis.
 					g.DrawLine(myPen, new Point(xLoc,m_yAxisStart), new Point(xLoc,m_yAxisEnd));
-					g.DrawString(m_DimNames[i-1], fnt, new SolidBrush(Color.Black),xLoc,m_yAxisEnd-35);
+                    g.DrawString(m_DimNames[i - 1], fntDimTitle, new SolidBrush(Color.Black), xLoc - xLocTextAdjust, m_yAxisEnd - 38);
 
-					// Display min max values as labels on each y axis.
-					Font myFnt = new Font("Verdana", 10);
+					// Display min max values as labels on each y sub-axis.
+					Font fntMinMax = new Font("Verdana", 9);
 					strMin = System.Convert.ToString(m_yMins[i-1]); 
 					strMax = System.Convert.ToString(m_yMaxs[i-1]);
-					g.DrawString(strMax, fnt, new SolidBrush(Color.Black),xLoc,m_yAxisEnd-20);
-					g.DrawString(strMin, fnt, new SolidBrush(Color.Black),xLoc,m_yAxisStart+10);
+                    g.DrawString(strMax, fntMinMax, new SolidBrush(Color.Black), xLoc - xLocTextAdjust, m_yAxisEnd - 20);
+                    g.DrawString(strMin, fntMinMax, new SolidBrush(Color.Black), xLoc - xLocTextAdjust, m_yAxisStart + 10);
 					
 					xLoc = xLoc + m_pAxisInterval;
 				}
@@ -455,7 +457,7 @@ namespace WinAppDataVizParallelCoords
         private void lnkAbout_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string txtMessage = "Parallel Coordinates\n";
-            txtMessage = txtMessage + "Joseph True\njtrueprojects@gmail.com\nCopyright 2008-2017";
+            txtMessage = txtMessage + "Joseph True\njtrueprojects@gmail.com\nCopyright 2008-2018";
             string txtTitle = "About";
             MessageBox.Show(txtMessage, txtTitle);
         }
